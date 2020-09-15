@@ -1,19 +1,22 @@
 package com.company;
 
 import java.io.*;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.*;
 
 public class Main {
 
     public static final Scanner input = new Scanner(System.in);
+    public static final NumberFormat formatter = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(new Locale("pt", "BR")));
 
     public static void main(String[] args) throws IOException {
 
         int currentChoice;
 
+        // TODO read categories dynamically from JSON config file
+        // init lists
         List<ItemMenu> listPratos = FileReader.GetListFromFile("pratos.csv", ";");
         List<ItemMenu> listBebidas = FileReader.GetListFromFile("bebidas-tabuladas.txt", "\t");
         List<ItemMenu> listVinhos = FileReader.GetListFromFile("vinhos-tabulados.txt", "\t");
@@ -58,16 +61,17 @@ public class Main {
         FileWriter fileOut = new FileWriter(urlOut + filename);
         PrintWriter writer = new PrintWriter(fileOut);
 
+
         writer.println("Resumo do pedido em " + DateUtil.NowBrazil());
         writer.println("");
         writer.println("--------------------");
         writer.println("Item (preço)");
         writer.println("");
         itensEscolhidos.stream().forEach(itemMenu -> {
-            writer.println(itemMenu.nome + " ( R$" + itemMenu.preco + " )");
+            writer.println(itemMenu.name + " ( R$" + formatter.format(itemMenu.price) + " )");
         });
         writer.println("");
-        writer.println("Total: R$" + itensEscolhidos.stream().mapToDouble(itemMenu -> itemMenu.preco).sum());
+        writer.println("Total: R$" + formatter.format(itensEscolhidos.stream().mapToDouble(itemMenu -> itemMenu.price).sum()));
         writer.println("--------------------");
         if (observacao.length() > 0) {
             writer.println("");

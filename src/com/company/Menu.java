@@ -9,15 +9,15 @@ public class Menu {
         System.out.println(title + "s disponíveis:");
 
         for (int i = 0; i < items.size(); i++) {
-            System.out.println("[ " + i + " ] - " + items.get(i).nome + " ( R$ " + items.get(i).preco + " )");
+            System.out.println("[ " + i + " ] - " + items.get(i).name + " ( R$ " + Main.formatter.format(items.get(i).price) + " )");
         }
 
-        System.out.println("Digite o código do item desejado:");
+        System.out.println("Digite o código do item1 desejado:");
 
         ItemMenu itemPicked = items.get(Main.input.nextInt());
 
         System.out.println("Você escolheu:");
-        System.out.println(itemPicked.nome);
+        System.out.println(itemPicked.name);
 
         return itemPicked;
     }

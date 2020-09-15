@@ -1,11 +1,11 @@
 package com.company;
 
 public class ItemMenu {
-    String nome;
-    float preco;
+    String name;
+    float price;
 
-    public ItemMenu(String nome, float preco) {
-        this.nome = nome;
-        this.preco = preco;
+    public ItemMenu(String name, float price) {
+        this.name = name;
+        this.price = price;
     }
 }
