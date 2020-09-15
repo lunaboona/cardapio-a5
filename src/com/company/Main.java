@@ -12,59 +12,21 @@ public class Main {
 
         Scanner inputScanner = new Scanner(System.in);
 
-
         List<ItemMenu> listPratos = FileReader.GetListFromFile("pratos.csv", ";");
         List<ItemMenu> listBebidas = FileReader.GetListFromFile("bebidas-tabuladas.txt", "\t");
         List<ItemMenu> listVinhos = FileReader.GetListFromFile("vinhos-tabulados.txt", "\t");
-        
+
+        List<ItemMenu> itensEscolhidos = new ArrayList<>();
+
         // inicio
         System.out.println("Bem-vindo ao restaurante!");
 
-        // pratos
-        System.out.println("Pratos disponíveis:");
-
-        for (int i = 0; i < listPratos.size(); i++) {
-            System.out.println("[ " + i + " ] - " + listPratos.get(i).nome + " ( R$ " + listPratos.get(i).preco + " )");
-        }
-
-        System.out.println("Favor escolher um prato (digite o código):");
-
-        ItemMenu pratoEscolhido = listPratos.get(inputScanner.nextInt());
-
-        System.out.println("Você escolheu:");
-        System.out.println(pratoEscolhido.nome);
-
-        // bebidas
-        System.out.println("Bebidas disponíveis:");
-
-        for (int i = 0; i < listBebidas.size(); i++) {
-            System.out.println("[ " + i + " ] - " + listBebidas.get(i).nome + " ( R$ " + listBebidas.get(i).preco + " )");
-        }
-
-        System.out.println("Favor escolher uma bebida (digite o código):");
-
-        ItemMenu bebidaEscolhida = listBebidas.get(inputScanner.nextInt());
-
-        System.out.println("Você escolheu:");
-        System.out.println(bebidaEscolhida.nome);
-
-        // vinhos
-        System.out.println("Vinhos disponíveis:");
-
-        for (int i = 0; i < listVinhos.size(); i++) {
-            System.out.println("[ " + i + " ] - " + listVinhos.get(i).nome + " ( R$ " + listVinhos.get(i).preco + " )");
-        }
-
-        System.out.println("Favor escolher um vinho (digite o código):");
-
-        ItemMenu vinhoEscolhido = listVinhos.get(inputScanner.nextInt());
-
-        System.out.println("Você escolheu:");
-        System.out.println(vinhoEscolhido.nome);
+        ItemMenu pratoEscolhido = Menu.ListItems(listPratos, "Prato");
+        ItemMenu bebidaEscolhida = Menu.ListItems(listBebidas, "Bebida");
+        ItemMenu vinhoEscolhido = Menu.ListItems(listVinhos, "Vinho");
 
         // observação
         System.out.println("Deseja incluir uma observação?:");
-
         inputScanner.nextLine();
         String observacao = inputScanner.nextLine();
 
