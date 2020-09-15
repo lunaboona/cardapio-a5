@@ -8,9 +8,11 @@ import java.util.*;
 
 public class Main {
 
+    public static final Scanner input = new Scanner(System.in);
+
     public static void main(String[] args) throws IOException {
 
-        Scanner inputScanner = new Scanner(System.in);
+        int currentChoice;
 
         List<ItemMenu> listPratos = FileReader.GetListFromFile("pratos.csv", ";");
         List<ItemMenu> listBebidas = FileReader.GetListFromFile("bebidas-tabuladas.txt", "\t");
@@ -20,36 +22,59 @@ public class Main {
 
         // inicio
         System.out.println("Bem-vindo ao restaurante!");
+        System.out.println("");
 
-        ItemMenu pratoEscolhido = Menu.ListItems(listPratos, "Prato");
-        ItemMenu bebidaEscolhida = Menu.ListItems(listBebidas, "Bebida");
-        ItemMenu vinhoEscolhido = Menu.ListItems(listVinhos, "Vinho");
+        do {
+            System.out.println("Escolha uma opção para incluir ao seu pedido:");
+            System.out.println("[ 1 ] Pratos");
+            System.out.println("[ 2 ] Bebidas");
+            System.out.println("[ 3 ] Vinhos");
+            System.out.println("[ 0 ] Finalizar");
+            currentChoice = input.nextInt();
+
+            switch (currentChoice) {
+                case (1): { itensEscolhidos.add(Menu.ListItems(listPratos, "Prato")); break; }
+                case (2): { itensEscolhidos.add(Menu.ListItems(listBebidas, "Bebida")); break; }
+                case (3): { itensEscolhidos.add(Menu.ListItems(listVinhos, "Vinho")); break; }
+                default: { }
+            }
+        } while (currentChoice > 0);
+
+        if (itensEscolhidos.size() == 0) {
+            input.close();
+            System.out.println("Nenhum item escolhido, finalizando pedido.");
+            return;
+        }
 
         // observação
         System.out.println("Deseja incluir uma observação?:");
-        inputScanner.nextLine();
-        String observacao = inputScanner.nextLine();
+        input.nextLine();
+        String observacao = input.nextLine();
+        input.close();
 
         // out
         String filename = "/pedidos/pedido_" + DateUtil.NowFlat() + ".txt";
-
         String urlOut = "./src/" + Main.class.getPackage().getName().replace(".", "/");
-        FileWriter arquivoOut = new FileWriter(urlOut + filename);
-        PrintWriter gravador = new PrintWriter(arquivoOut);
+        FileWriter fileOut = new FileWriter(urlOut + filename);
+        PrintWriter writer = new PrintWriter(fileOut);
 
-        gravador.println("Resumo do pedido em " + DateUtil.NowBrazil());
-        gravador.println("");
-        gravador.println("Prato: " + pratoEscolhido.nome + " ( R$" + pratoEscolhido.preco + " )");
-        gravador.println("Bebida: " + bebidaEscolhida.nome + " ( R$" + bebidaEscolhida.preco + " )");
-        gravador.println("Vinho: " + vinhoEscolhido.nome + " ( R$" + vinhoEscolhido.preco + " )");
-        gravador.println("");
-        gravador.println("Total: R$" + (pratoEscolhido.preco + bebidaEscolhida.preco + vinhoEscolhido.preco));
+        writer.println("Resumo do pedido em " + DateUtil.NowBrazil());
+        writer.println("");
+        writer.println("--------------------");
+        writer.println("Item (preço)");
+        writer.println("");
+        itensEscolhidos.stream().forEach(itemMenu -> {
+            writer.println(itemMenu.nome + " ( R$" + itemMenu.preco + " )");
+        });
+        writer.println("");
+        writer.println("Total: R$" + itensEscolhidos.stream().mapToDouble(itemMenu -> itemMenu.preco).sum());
+        writer.println("--------------------");
         if (observacao.length() > 0) {
-            gravador.println("");
-            gravador.println("Observação: " + observacao);
+            writer.println("");
+            writer.println("Observação: " + observacao);
         }
 
-        gravador.close();
+        writer.close();
 
         System.out.println("Pedido finalizado! Confira em \"." + filename +"\" :)");
 

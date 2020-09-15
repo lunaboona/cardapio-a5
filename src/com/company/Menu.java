@@ -1,12 +1,10 @@
 package com.company;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class Menu {
 
     public static ItemMenu ListItems(List<ItemMenu> items, String title) {
-        Scanner input = new Scanner(System.in);
 
         System.out.println(title + "s disponíveis:");
 
@@ -16,8 +14,7 @@ public class Menu {
 
         System.out.println("Digite o código do item desejado:");
 
-        ItemMenu itemPicked = items.get(input.nextInt());
-        input.close();
+        ItemMenu itemPicked = items.get(Main.input.nextInt());
 
         System.out.println("Você escolheu:");
         System.out.println(itemPicked.nome);
