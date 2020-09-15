@@ -1,7 +1,0 @@
-Resumo do pedido
-
-Prato: Filé de frango com molho de mostarda ( R$12.5 )
-Bebida: Sprite ( R$4.7 )
-Vinho: Gewurztraminer ( R$57.0 )
-
-Total: R$74.2

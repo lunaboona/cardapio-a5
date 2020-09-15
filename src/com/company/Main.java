@@ -2,9 +2,9 @@ package com.company;
 
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Main {
 
@@ -12,57 +12,11 @@ public class Main {
 
         Scanner inputScanner = new Scanner(System.in);
 
-        // get pratos
-        URL pratosUrl = Main.class.getResource("pratos.csv");
-        File pratosArquivo = new File(pratosUrl.getPath());
-        Scanner leitorPratos = new Scanner(new FileInputStream(pratosArquivo));
-        leitorPratos.nextLine();
-        List<ItemMenu> listPratos = new ArrayList<ItemMenu>();
-        while (leitorPratos.hasNextLine()) {
-            String[] conteudoPratos = leitorPratos.nextLine().split(";");
-            if (conteudoPratos.length > 1) {
-                listPratos.add(new ItemMenu(
-                        conteudoPratos[0],
-                        Float.parseFloat(conteudoPratos[1])
-                ));
-            }
-        }
-        leitorPratos.close();
 
-        // get bebidas
-        URL bebidasUrl = Main.class.getResource("bebidas-tabuladas.txt");
-        File bebidasArquivo = new File(bebidasUrl.getPath());
-        Scanner leitorBebidas = new Scanner(new FileInputStream(bebidasArquivo));
-        leitorBebidas.nextLine();
-        List<ItemMenu> listBebidas = new ArrayList<ItemMenu>();
-        while (leitorBebidas.hasNextLine()) {
-            String[] conteudoBebidas = leitorBebidas.nextLine().split("\t");
-            if (conteudoBebidas.length > 1) {
-                listBebidas.add(new ItemMenu(
-                        conteudoBebidas[1],
-                        Float.parseFloat(conteudoBebidas[0].replace(",", "."))
-                ));
-            }
-        }
-        leitorBebidas.close();
-
-        // get vinhos
-        URL vinhosUrl = Main.class.getResource("vinhos-tabulados.txt");
-        File vinhosArquivo = new File(vinhosUrl.getPath());
-        Scanner leitorVinhos = new Scanner(new FileInputStream(vinhosArquivo));
-        leitorVinhos.nextLine();
-        List<ItemMenu> listVinhos = new ArrayList<ItemMenu>();
-        while (leitorVinhos.hasNextLine()) {
-            String[] conteudoVinhos = leitorVinhos.nextLine().split("\t");
-            if (conteudoVinhos.length > 1) {
-                listVinhos.add(new ItemMenu(
-                        conteudoVinhos[1],
-                        Float.parseFloat(conteudoVinhos[0])
-                ));
-            }
-        }
-        leitorBebidas.close();
-
+        List<ItemMenu> listPratos = FileReader.GetListFromFile("pratos.csv", ";");
+        List<ItemMenu> listBebidas = FileReader.GetListFromFile("bebidas-tabuladas.txt", "\t");
+        List<ItemMenu> listVinhos = FileReader.GetListFromFile("vinhos-tabulados.txt", "\t");
+        
         // inicio
         System.out.println("Bem-vindo ao restaurante!");
 
@@ -115,11 +69,13 @@ public class Main {
         String observacao = inputScanner.nextLine();
 
         // out
+        String filename = "/pedidos/pedido_" + DateUtil.NowFlat() + ".txt";
+
         String urlOut = "./src/" + Main.class.getPackage().getName().replace(".", "/");
-        FileWriter arquivoOut = new FileWriter(urlOut + "/pedido.txt");
+        FileWriter arquivoOut = new FileWriter(urlOut + filename);
         PrintWriter gravador = new PrintWriter(arquivoOut);
 
-        gravador.println("Resumo do pedido");
+        gravador.println("Resumo do pedido em " + DateUtil.NowBrazil());
         gravador.println("");
         gravador.println("Prato: " + pratoEscolhido.nome + " ( R$" + pratoEscolhido.preco + " )");
         gravador.println("Bebida: " + bebidaEscolhida.nome + " ( R$" + bebidaEscolhida.preco + " )");
@@ -133,7 +89,7 @@ public class Main {
 
         gravador.close();
 
-        System.out.println("Pedido finalizado! Confira em \"pedido.txt\" :)");
+        System.out.println("Pedido finalizado! Confira em \"." + filename +"\" :)");
 
     }
 }
