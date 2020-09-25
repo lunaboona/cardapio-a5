@@ -23,7 +23,7 @@ public class Main {
 
         List<ItemMenu> itensEscolhidos = new ArrayList<>();
 
-        // inicio
+        // display menu
         System.out.println("Bem-vindo ao restaurante!");
         System.out.println("");
 
@@ -49,7 +49,7 @@ public class Main {
             return;
         }
 
-        // observação
+        // add note
         System.out.println("Deseja incluir uma observação?:");
         input.nextLine();
         String observacao = input.nextLine();
