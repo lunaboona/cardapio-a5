@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Menu {
 
-    public static ItemMenu ListItems(List<ItemMenu> items, String title) {
+    public static Item ListItems(List<Item> items, String title) {
 
         System.out.println(title + "s disponíveis:");
 
@@ -14,7 +14,7 @@ public class Menu {
 
         System.out.println("Digite o código do item1 desejado:");
 
-        ItemMenu itemPicked = items.get(Main.input.nextInt());
+        Item itemPicked = items.get(Main.input.nextInt());
 
         System.out.println("Você escolheu:");
         System.out.println(itemPicked.name);

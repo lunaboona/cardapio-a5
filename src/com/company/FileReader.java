@@ -8,7 +8,7 @@ import java.util.*;
 
 public class FileReader {
 
-    public static List<ItemMenu> GetListFromFile(String filename, String separator) throws FileNotFoundException {
+    public static List<Item> GetListFromFile(String filename, String separator) throws FileNotFoundException {
         URL url = Main.class.getResource(filename);
         File file = new File(url.getPath());
         Scanner scanner = new Scanner(new FileInputStream(file));
@@ -17,11 +17,11 @@ public class FileReader {
         int priceColumn = Arrays.asList(header).indexOf("PRECO");
         int nameColumn = (priceColumn == 0) ? 1 : 0;
 
-        List<ItemMenu> list = new ArrayList<ItemMenu>();
+        List<Item> list = new ArrayList<Item>();
         while (scanner.hasNextLine()) {
             String[] content = scanner.nextLine().split(separator);
             if (content.length > 1) {
-                list.add(new ItemMenu(
+                list.add(new Item(
                         content[nameColumn],
                         Float.parseFloat(content[priceColumn].replace(",", "."))
                 ));

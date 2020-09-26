@@ -17,11 +17,11 @@ public class Main {
 
         // TODO read categories dynamically from JSON config file
         // init lists
-        List<ItemMenu> listPratos = FileReader.GetListFromFile("pratos.csv", ";");
-        List<ItemMenu> listBebidas = FileReader.GetListFromFile("bebidas-tabuladas.txt", "\t");
-        List<ItemMenu> listVinhos = FileReader.GetListFromFile("vinhos-tabulados.txt", "\t");
+        List<Item> listPratos = FileReader.GetListFromFile("pratos.csv", ";");
+        List<Item> listBebidas = FileReader.GetListFromFile("bebidas-tabuladas.txt", "\t");
+        List<Item> listVinhos = FileReader.GetListFromFile("vinhos-tabulados.txt", "\t");
 
-        List<ItemMenu> itensEscolhidos = new ArrayList<>();
+        List<Item> itensEscolhidos = new ArrayList<>();
 
         // display menu
         System.out.println("Bem-vindo ao restaurante!");
@@ -67,11 +67,11 @@ public class Main {
         writer.println("--------------------");
         writer.println("Item (preço)");
         writer.println("");
-        itensEscolhidos.stream().forEach(itemMenu -> {
-            writer.println(itemMenu.name + " ( R$" + formatter.format(itemMenu.price) + " )");
+        itensEscolhidos.stream().forEach(item -> {
+            writer.println(item.name + " ( R$" + formatter.format(item.price) + " )");
         });
         writer.println("");
-        writer.println("Total: R$" + formatter.format(itensEscolhidos.stream().mapToDouble(itemMenu -> itemMenu.price).sum()));
+        writer.println("Total: R$" + formatter.format(itensEscolhidos.stream().mapToDouble(item -> item.price).sum()));
         writer.println("--------------------");
         if (observacao.length() > 0) {
             writer.println("");
