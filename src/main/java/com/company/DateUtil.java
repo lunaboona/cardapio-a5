@@ -1,4 +1,4 @@
-package main.java.com.company;
+package com.company;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
