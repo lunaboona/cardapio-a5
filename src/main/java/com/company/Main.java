@@ -11,15 +11,16 @@ public class Main {
     public static final Scanner input = new Scanner(System.in);
     public static final NumberFormat formatter = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(new Locale("pt", "BR")));
 
+    public static final String[] categories = { "BEBIDA", "VINHO", "PRATO"};
     public static void main(String[] args) throws IOException {
 
         int currentChoice;
 
-        // TODO read categories dynamically from JSON config file
+        // TODO Refactor using new ItemRepository
         // init lists
-        List<Item> listPratos = FileReader.GetListFromFile("pratos.csv", ";");
-        List<Item> listBebidas = FileReader.GetListFromFile("bebidas-tabuladas.txt", "\t");
-        List<Item> listVinhos = FileReader.GetListFromFile("vinhos-tabulados.txt", "\t");
+//        List<Item> listPratos = FileReader.GetListFromFile("pratos.csv", ";");
+//        List<Item> listBebidas = FileReader.GetListFromFile("bebidas-tabuladas.txt", "\t");
+//        List<Item> listVinhos = FileReader.GetListFromFile("vinhos-tabulados.txt", "\t");
 
         List<Item> itensEscolhidos = new ArrayList<>();
 
