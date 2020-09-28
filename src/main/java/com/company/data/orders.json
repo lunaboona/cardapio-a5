@@ -9,6 +9,32 @@
           "category": "BEBIDA"
         }
       ]
+    },
+    {
+      "id": 2,
+      "items": [
+        {
+          "name": "Água mineral",
+          "price": 3.7,
+          "category": "BEBIDA"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "items": [
+        {
+          "name": "Miojo",
+          "price": 2.0,
+          "category": "PRATO"
+        },
+        {
+          "name": "Moscato",
+          "price": 35.25,
+          "category": "VINHO"
+        }
+      ],
+      "note": "wowloolo"
     }
   ]
 }
