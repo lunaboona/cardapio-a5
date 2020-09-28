@@ -52,7 +52,7 @@ public class OrderRepository {
         return true;
     }
 
-    private static boolean Update(Order order) throws IOException {
+    public static boolean Update(Order order) throws IOException {
         List<Order> orders = ReadOrdersFromJSON();
 
         if (OrderExists(orders, order.GetId())) {
@@ -94,5 +94,13 @@ public class OrderRepository {
 
     private static boolean OrderExists(List<Order> orderList, int id) {
         return orderList.stream().map(Order::GetId).collect(Collectors.toList()).contains(id);
+    }
+
+    public static int GetAvailableID() throws IOException {
+        List<Order> orders = ReadOrdersFromJSON();
+        if (orders.size() > 0) {
+            return orders.get(orders.size() - 1).GetId() + 1;
+        }
+        return 1;
     }
 }
