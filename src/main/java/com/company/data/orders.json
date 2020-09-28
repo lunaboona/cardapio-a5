@@ -1,16 +1,6 @@
 {
   "orders": [
     {
-      "id": 1,
-      "items": [
-        {
-          "name": "Água mineral",
-          "price": 3.7,
-          "category": "BEBIDA"
-        }
-      ]
-    },
-    {
       "id": 2,
       "items": [
         {

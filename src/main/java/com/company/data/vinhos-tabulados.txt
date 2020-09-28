@@ -7,7 +7,6 @@ PRECO	VINHO
 47.77	Pinot Noir
 54.00	Riesling Itálico
 38.10	Chardonnay Americano
-57.00	Gewurztraminer
 39.90	Semillón
 46.90	Sauvignon Blanc
 39.00	Barbera Italiana
