@@ -1,11 +1,12 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
 
     private final int id;
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
     private String note;
 
     public Order(int id) {
