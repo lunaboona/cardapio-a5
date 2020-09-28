@@ -36,7 +36,7 @@ public class Main {
             case 5 -> {
                 System.exit(0);
             }
-            default -> r = Menu.ShowCategoryMenu(choice);
+            default -> r = Menu.ShowCategoryMenu(choice - 2);
         }
 
         return r;
