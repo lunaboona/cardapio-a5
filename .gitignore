@@ -2,3 +2,4 @@ out
 src/main/java/com/company/pedidos
 .idea
 .idea/modules.xml
+target
