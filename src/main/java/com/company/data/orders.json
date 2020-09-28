@@ -17,8 +17,14 @@
           "name": "Água mineral",
           "price": 3.7,
           "category": "BEBIDA"
+        },
+        {
+          "name": "Pepsi",
+          "price": 5.3,
+          "category": "BEBIDA"
         }
-      ]
+      ],
+      "note": "hi world"
     },
     {
       "id": 3,

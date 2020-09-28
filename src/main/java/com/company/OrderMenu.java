@@ -22,9 +22,9 @@ public class OrderMenu {
                 System.out.println("Escolha um número válido!");
             } else {
                 switch (choice) {
-                    case 1 -> ShowOrderCreateMenu(new Order(OrderRepository.GetAvailableID()));
+                    case 1 -> ShowOrderCreateMenu();
                     case 2 -> ShowOrderReadMenu();
-//                    case 3 -> ShowOrderUpdateMenu();
+                    case 3 -> ShowOrderUpdateMenu();
                     case 4 -> ShowOrderDeleteMenu();
                     case 5 -> System.exit(0);
                 }
@@ -32,7 +32,7 @@ public class OrderMenu {
         } while (choice > 5 || choice < 1);
     }
 
-    public static void ShowOrderCreateMenu(Order order) throws IOException, InterruptedException {
+    public static void ShowOrderInteractionMenu(Order order, boolean isCreating) throws IOException, InterruptedException {
         System.out.println("\nCriar pedido");
         int choice;
         do {
@@ -48,9 +48,9 @@ public class OrderMenu {
                 System.out.println("Escolha um número válido!");
             } else {
                 switch (choice) {
-                    case 1 -> ShowOrderItemsMenu(order, true);
-                    case 2 -> ShowOrderNoteMenu(order);
-                    case 3 -> SaveOrder(order, true);
+                    case 1 -> ShowOrderItemsMenu(order, isCreating);
+                    case 2 -> ShowOrderNoteMenu(order, isCreating);
+                    case 3 -> SaveOrder(order, isCreating);
                     case 4 -> System.exit(0);
                 }
             }
@@ -73,13 +73,7 @@ public class OrderMenu {
                 System.out.println("Escolha um número válido!");
             } else {
                 switch (choice) {
-                    case 4 -> {
-                        if (isCreating) {
-                            ShowOrderCreateMenu(order);
-                        } else {
-                            ShowOrderUpdateMenu(order);
-                        }
-                    }
+                    case 4 -> ShowOrderInteractionMenu(order, isCreating);
                     case 5 -> System.exit(0);
                     default -> ListOrderItems(order, choice - 1, isCreating);
                 }
@@ -87,17 +81,20 @@ public class OrderMenu {
         } while (choice > 4 || choice < 1);
     }
 
-    private static void ShowOrderUpdateMenu(Order order) {
-//        System.out.println("\nAtualizar pedido");
-//        System.out.print("Informe o ID: ");
-//        int id = Main.input.nextInt();
-//        Order order = OrderRepository.GetById(id);
-//        if (order != null) {
-//            Main.currentOrder = order;
-//            Menu.ShowEditMenu();
-//        } else {
-//            System.out.println("Erro ao atualizar");
-//        }
+    public static void ShowOrderCreateMenu() throws IOException, InterruptedException {
+        ShowOrderInteractionMenu(new Order(OrderRepository.GetAvailableID()), true);
+    }
+
+    private static void ShowOrderUpdateMenu() throws IOException, InterruptedException {
+        System.out.println("\nAtualizar pedido");
+        System.out.print("Informe o ID: ");
+        int id = Main.input.nextInt();
+        Order order = OrderRepository.GetById(id);
+        if (order != null) {
+            ShowOrderInteractionMenu(order, false);
+        } else {
+            System.out.println("Erro ao atualizar");
+        }
     }
 
     public static void ListOrderItems(Order order, int category, boolean isCreating) throws IOException, InterruptedException {
@@ -112,11 +109,11 @@ public class OrderMenu {
         ShowOrderItemsMenu(order, isCreating);
     }
 
-    public static void ShowOrderNoteMenu(Order order) throws IOException, InterruptedException {
+    public static void ShowOrderNoteMenu(Order order, boolean isCreating) throws IOException, InterruptedException {
         System.out.println("Nova observação: ");
         Main.input.nextLine();
         order.SetNote(Main.input.nextLine());
-        ShowOrderCreateMenu(order);
+        ShowOrderInteractionMenu(order, isCreating);
     }
 
     public static void ShowOrderReadMenu() throws IOException {
