@@ -14,40 +14,24 @@ public class Main {
 
     public static final String[] categories = { "BEBIDA", "VINHO", "PRATO"};
 
-    private static final List<List<Item>> listItems = new ArrayList<>();
-    private static Order currentOrder;
+    public static final List<List<Item>> listItems = new ArrayList<>();
+    public static Order currentOrder;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         listItems.add(ItemRepository.ReadItemsFromFile(0));
         listItems.add(ItemRepository.ReadItemsFromFile(1));
         listItems.add(ItemRepository.ReadItemsFromFile(2));
-
-        int choice;
-        do {
-            currentOrder = new Order(OrderRepository.GetAvailableID());
-            choice = Menu.ShowMainMenu();
-        } while (choice == 2);
+        currentOrder = new Order(OrderRepository.GetAvailableID());
+        Menu.ShowMainMenu();
     }
 
-    public static int ProcessInputChoice(int choice) throws IOException, InterruptedException {
-        int r = 0;
-        switch (choice) {
-            case 1 -> r = Menu.ShowOrderMenu();
-            case 5 -> {
-                System.exit(0);
-            }
-            default -> r = Menu.ShowCategoryMenu(choice - 2);
-        }
 
-        return r;
-    }
 
-    public static int ProcessOrderChoice(int choice) throws IOException, InterruptedException {
-        int r = 0;
+    public static void ProcessOrderChoice(int choice) throws IOException, InterruptedException {
         switch (choice) {
             case 1 -> {
                 System.out.println("\nCriar pedido");
-                r = Menu.ShowItemsMenu(true);
+                Menu.ShowItemsMenu(true);
             }
             case 2 -> {
                 List<Order> orders = OrderRepository.ReadOrdersFromJSON();
@@ -57,26 +41,22 @@ public class Main {
                 if (listSize > 0) {
                     IntStream.range(0, listSize).forEach(index -> {
                         Order order = orders.get(index);
-                        PrintOrder(order, "Pedido " + order.GetId(), false, false);
+                        Main.PrintOrder(order, "Pedido " + order.GetId(), false, false);
                     });
                 } else {
                     System.out.println("Não há nenhum pedido\n");
                 }
-
-                r = 1;
-
             }
             case 3 -> {
                 System.out.println("\nAtualizar pedido");
                 System.out.print("Informe o ID: ");
-                int id = input.nextInt();
+                int id = Main.input.nextInt();
                 Order order = OrderRepository.GetById(id);
                 if (order != null) {
-                    currentOrder = order;
-                    r = Menu.ShowEditMenu();
+                    Main.currentOrder = order;
+                    Menu.ShowEditMenu();
                 } else {
                     System.out.println("Erro ao atualizar");
-                    r = 1;
                 }
             }
             case 4 -> {
@@ -88,17 +68,11 @@ public class Main {
                 } else {
                     System.out.println("Erro ao apagar");
                 }
-                r = 1;
             }
             case 5 -> {
-                r = 2;
-            }
-            case 6 -> {
                 System.exit(0);
             }
         }
-
-        return r;
     }
 
     public static int ProcessEditChoice(int choice) throws IOException, InterruptedException {
@@ -205,87 +179,6 @@ public class Main {
         return r;
     }
 
-    public static int ProcessCategoryChoice(int choice, int category) throws IOException, InterruptedException {
-        int r = 0;
-        String categoryName = categories[category];
-        listItems.set(category, ItemRepository.ReadItemsFromFile(category));
-        List<Item> items = listItems.get(category);
-        switch(choice) {
-            case 1 -> {
-                System.out.println("\nCriar");
-
-                System.out.print("Insira o nome: ");
-                input.nextLine();
-                String name = input.nextLine();
-
-                System.out.print("Insira o preço: ");
-                Float price = input.nextFloat();
-
-                Item newItem = new Item(categoryName, name, price);
-                ItemRepository.Create(category, newItem);
-
-                System.out.println("Sucesso");
-
-                r = 1;
-            }
-            case 2 -> {
-                Menu.ListItems(items, false);
-                r = 1;
-            }
-            case 3 -> {
-                System.out.println("\nEditar");
-                Menu.ListItems(items, false);
-
-                int i;
-                do {
-                    System.out.println("\nInsira o índice do item que deseja editar: ");
-                    i = input.nextInt();
-                    if (i < 1 || i > items.size()) {
-                        System.out.println("Escolha um número válido!");
-                    }
-                } while (i < 1 || i > items.size());
-
-                System.out.println("Insira o novo nome do item: ");
-                input.nextLine();
-                String name = input.nextLine();
-
-                System.out.println("Insira o novo preço do item: ");
-                Float price = input.nextFloat();
-
-                Item updatedItem = new Item(categoryName, name, price);
-                ItemRepository.Update(category, i - 1, updatedItem);
-                System.out.println("Sucesso");
-
-                r = 1;
-            }
-            case 4 -> {
-                System.out.println("\nApagar");
-                Menu.ListItems(items, false);
-
-                int i;
-                do {
-                    System.out.println("\nInsira o índice do item que deseja deletar: ");
-                    i = input.nextInt();
-                    if (i < 1 || i > items.size()) {
-                        System.out.println("Escolha um número válido");
-                    }
-                } while (i < 1 || i > items.size());
-                ItemRepository.Delete(category, i - 1);
-                System.out.println("Sucesso");
-
-                r = 1;
-            }
-            case 5 -> {
-                r = 2;
-            }
-            case 6 -> {
-                System.exit(0);
-            }
-        }
-
-        return r;
-    }
-
     private static int SaveOrder(boolean isCreating) throws IOException {
         PrintOrder(currentOrder, "Pedido atual", true, false);
 
@@ -341,7 +234,7 @@ public class Main {
         listItems.set(category, ItemRepository.ReadItemsFromFile(category));
         List<Item> currentList = listItems.get(category);
         do {
-            Menu.ListItems(currentList, true);
+            ItemMenu.ListItems(currentList, true);
             choice = Main.input.nextInt();
 
             if (choice < 1 || choice > currentList.size() + 1) {
@@ -357,7 +250,7 @@ public class Main {
         }
     }
 
-    private static void PrintOrder(Order order, String title, boolean showNote, boolean showIndex) {
+    public static void PrintOrder(Order order, String title, boolean showNote, boolean showIndex) {
         System.out.println(title + " | Preço total: R$ " + formatter.format(order.GetTotal()));
         IntStream.range(0, order.GetItems().size()).forEach(index -> {
             String indice = showIndex ? "["+(index + 1)+"] - " : "";

@@ -6,75 +6,50 @@ import java.util.stream.IntStream;
 
 public class Menu {
 
-    public static int ShowMainMenu() throws IOException, InterruptedException {
+    public static void ShowMainMenu() throws IOException, InterruptedException {
         int choice;
-        int r = 0;
         do {
             System.out.println("\nBem-vindo ao restaurante");
             System.out.println("[1] - Pedidos");
-            System.out.println("[2] - Bebidas");
-            System.out.println("[3] - Vinhos");
-            System.out.println("[4] - Pratos");
-            System.out.println("[5] - Sair");
+            System.out.println("[2] - Itens");
+            System.out.println("[3] - Sair");
 
             choice = Main.input.nextInt();
 
-            if (choice < 1 || choice > 5) {
+            if (choice < 1 || choice > 3) {
                 System.out.println("Escolha um número válido!");
             } else {
-                r = Main.ProcessInputChoice(choice);
+                switch (choice) {
+                    case 1 -> ShowOrderMenu();
+                    case 2 -> ItemMenu.ShowItemCategoriesMenu();
+                    case 3 -> System.exit(0);
+                }
             }
-        } while (choice > 5 || choice < 1 || r == 1);
-
-        return r;
+        } while (choice > 3 || choice < 1);
     }
 
-    public static int ShowOrderMenu() throws IOException, InterruptedException {
+
+    public static void ShowOrderMenu() throws IOException, InterruptedException {
         int choice;
-        int r = 0;
         do {
             System.out.println("\nGerenciar Pedidos\n");
             System.out.println("[1] - Criar pedido");
             System.out.println("[2] - Buscar pedido");
             System.out.println("[3] - Atualizar pedido");
             System.out.println("[4] - Apagar pedido");
-            System.out.println("[5] - Voltar");
-            System.out.println("[6] - Sair");
+            System.out.println("[5] - Sair");
 
             choice = Main.input.nextInt();
 
             if (choice < 1 || choice > 6) {
                 System.out.println("Escolha um número válido!");
             } else {
-                r = Main.ProcessOrderChoice(choice);
+                Main.ProcessOrderChoice(choice);
             }
-        } while (choice > 6 || choice < 1 || r == 1);
+        } while (choice > 6 || choice < 1);
 
-        return r;
     }
 
-    public static int ShowCategoryMenu(int category) throws IOException, InterruptedException {
-        int choice;
-        int r = 0;
-        do {
-            System.out.println("[1] - Criar");
-            System.out.println("[2] - Buscar");
-            System.out.println("[3] - Atualizar");
-            System.out.println("[4] - Apagar");
-            System.out.println("[5] - Voltar");
-            System.out.println("[6] - Sair");
-
-            choice = Main.input.nextInt();
-
-            if (choice < 1 || choice > 6) {
-                System.out.println("Escolha um número válido!");
-            } else {
-                r = Main.ProcessCategoryChoice(choice, category);
-            }
-        } while (choice > 6 || choice < 1 || r == 1);
-
-        return r;
-    }
 
     public static int ShowItemsMenu(boolean isCreating) throws InterruptedException, IOException {
         int choice;
@@ -123,22 +98,6 @@ public class Menu {
         return r;
     }
 
-    public static void ListItems(List<Item> items, boolean isMainMenu) {
-        if (isMainMenu) {
-            System.out.println("Itens disponíveis:");
-        }
 
-        System.out.println();
-
-        int s = items.size();
-        IntStream.range(0, s).forEach(i -> {
-            Item item = items.get(i);
-            System.out.println("["+ (i + 1) +"] - " + item.name + "\t\t( R$ " + Main.formatter.format(item.price) + " )");
-        });
-
-        if (isMainMenu) {
-            System.out.println("[" + (s + 1) + "] - Voltar");
-        }
-    }
 
 }
